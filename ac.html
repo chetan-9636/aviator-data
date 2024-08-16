@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Details</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .checkbox-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .checkbox-item {
+            flex-basis: 48%;
+            margin-bottom: 10px;
+        }
+        .radio-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Saved Student Details</h1>
+    
+    <!-- Form to input student details -->
+    <form id="studentForm">
+        <label for="date of enquiry">Date of Enquiry</label>
+        <input type="date" id="date of enquiry" name="date of enquiry"><br><br>
+
+        <label for="source">Source</label>
+        <select id="source" name="source">
+            <option value="DRM">DRM</option>
+            <option value="TE">TE</option>
+            <option value="Call">Call</option>
+            <option value="Whatsapp">Whatsapp</option>
+
+        </select>
+        
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="contact">Contact Number:</label>
+        <input type="text" id="contact" name="contact"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"><br><br>
+
+        <label for="qualification">Education Qualification:</label>
+        <input type="text" id="qualification" name="qualification"><br><br>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age"><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location"><br><br>
+
+        <label for="interested">Interested:</label>
+        <input type="text" id="interested" name="interested"><br><br>
+
+        <label for="comments">Comments:</label>
+        <input type="text" id="comments" name="comments"><br><br>
+
+        <label for="followUp">Follow Up:</label>
+        <input type="date" id="followUp" name="followUp"><br><br>
+
+        <label for="remarks">Remarks:</label>
+        <select id="remarks" name="remarks">
+            <option value="Fee concern">Fee concern</option>
+            <option value="Parents Obligation">Parents Obligation</option>
+            <option value="Not connecting">Not connecting</option>
+            <option value="Not answering">Not answering</option>
+            <option value="Switched off">Switched off</option>
+            <option value="Out of Service">Out of Service</option>
+            <option value="Not interested">Not interested</option>
+            <option value="Not reachable">Not reachable</option>
+            <option value="Prospect">Prospect</option>
+            <option value="Future Prospect">Future Prospect</option>
+            <option value="Language Problem">Language Problem</option>
+            <option value="Call back">Call back</option>
+            <option value="Wrong Number">Wrong Number</option>
+
+        </select>
+
+        <label for="followUp1">followUp1</label>
+        <input type="text" id="followUp1" name="followUp1"><br><br>
+
+        <label for="followUp2">followUp2</label>
+        <input type="text" id="followUp2" name="followUp2"><br><br>
+
+        <label for="followUp3">followUp3</label>
+        <input type="text" id="followUp3" name="followUp3"><br><br>
+
+        <label for="followUp4">followUp4</label>
+        <input type="text" id="followUp4" name="followUp4"><br><br>
+
+        <label for="followUp5">followUp5</label>
+        <input type="text" id="followUp5" name="followUp5"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Gather form data
+            var formData = new FormData(event.target);
+            var studentData = [];
+
+            // Convert FormData to array
+            formData.forEach(function(value, key) {
+                studentData.push(value);
+            });
+
+            // Save student details to Google Sheets
+            saveStudentDetailsToSheet(studentData);
+        });
+
+        function saveStudentDetailsToSheet(data) {
+            var url = 'https://script.google.com/macros/s/AKfycbx-FdKumJyO9P4IzwdUNUK76IdZsRg-YV-CoEhfIHlt0qhLLVEt7OUNQST-PGq8AXenzw/exec';
+            var payload = {
+                action: 'save',
+                data: JSON.stringify(data)
+            };
+
+            fetch(url, {
+                method: 'POST',
+                body: new URLSearchParams(payload)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Log success message
+                // Optionally, you can clear the form after submission
+                document.getElementById('studentForm').reset();
+            })
+            .catch(error => {
+                console.error('Error saving data:', error);
+            });
+        }
+    </script>
+</body>
+</html>
